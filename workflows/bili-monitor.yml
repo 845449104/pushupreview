@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
 
 env:
-  UP_MID: ${{ secrets.BILI_UP_MID }}
-  WECOM_WEBHOOK: ${{ secrets.WECOM_WEBHOOK }}
+  UP_MID: 1671203508
+  WECOM_WEBHOOK: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=3417954c-3998-4853-9d04-7be37fab82f9
   WECOM_MENTION: ${{ secrets.WECOM_MENTION }}  # @成员ID，可选
 
 jobs:
