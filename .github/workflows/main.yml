@@ -1,0 +1,38 @@
+# .github/workflows/bili-monitor.yml
+name: B站UP主评论监控
+
+on:
+  schedule:
+    - cron: '*/5 1-7 * * *'  # UTC 1:00-7:00 = 北京时间 9:00-15:00
+  workflow_dispatch:
+
+env:
+  UP_MID: 1671203508
+  WECOM_WEBHOOK: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=3417954c-3998-4853-9d04-7be37fab82f9
+  WECOM_MENTION: ${{ secrets.WECOM_MENTION }}  # @成员ID，可选
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: 恢复缓存
+        uses: actions/cache@v4
+        with:
+          path: .monitor-cache
+          key: bili-monitor-${{ github.run_id }}
+          restore-keys: bili-monitor-
+      
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          
+      - name: 安装依赖
+        run: pip install requests urllib3
+      
+      - name: 运行监控
+        run: python monitor.py
